@@ -2,7 +2,7 @@ import express from "express";
 import { Server as socketio } from "socket.io";
 import http from "http";
 import router from "./router.js";
-import cors from 'cors'
+import cors from "cors";
 import { addUser, removeUser, getUser, getUsersInRoom } from "./users.js";
 
 const app = express();
@@ -11,11 +11,7 @@ const io = new socketio(server);
 const PORT = 5000;
 
 app.use("/", router);
-app.use(cors({
-  origin : ["https://reace-node-socketio-chat-app-c28v.vercel.app/"], 
-  methods : ["POST", "GET"], 
-  credentials : true
-}));
+app.use(cors());
 
 io.on("connection", (socket) => {
   console.log("We have a new connection!!!");
@@ -50,7 +46,6 @@ io.on("connection", (socket) => {
         users: getUsersInRoom(user.room),
       });
     }
-
 
     // callback();
   });
