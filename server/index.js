@@ -4,11 +4,14 @@ import http from "http";
 import router from "./router.js";
 import cors from "cors";
 import { addUser, removeUser, getUser, getUsersInRoom } from "./users.js";
+import dotenv from "dotenv"
+
+dotenv.config();
 
 const app = express();
 const server = http.createServer(app);
 const io = new socketio(server);
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 
 app.use("/", router);
 app.use(cors());
