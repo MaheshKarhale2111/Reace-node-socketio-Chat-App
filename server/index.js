@@ -9,17 +9,11 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const app = express();
-app.use(
-  cors({
-    origin:
-      "https://65b4d4e6c65a5f7b66661726--frolicking-panda-02bc3c.netlify.app/",
-    methods: ["GET", "POST"],
-  })
-);
+
 const server = http.createServer(app);
 const io = new socketio(server, {
   cors: {
-    origin: "https://65b4d4e6c65a5f7b66661726--frolicking-panda-02bc3c.netlify.app/",
+    origin: "https://65b4d4e6c65a5f7b66661726--frolicking-panda-02bc3c.netlify.app",
   },
 });
 const PORT = process.env.PORT || 5000;
