@@ -11,7 +11,11 @@ const io = new socketio(server);
 const PORT = 5000;
 
 app.use("/", router);
-app.use(cors());
+app.use(cors({
+  origin : ["https://reace-node-socketio-chat-app-c28v.vercel.app/"], 
+  methods : ["POST", "GET"], 
+  credentials : true
+}));
 
 io.on("connection", (socket) => {
   console.log("We have a new connection!!!");
