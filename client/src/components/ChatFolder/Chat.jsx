@@ -36,7 +36,7 @@ export default function Chat() {
     return () => {
       socket.emit("onDisconnect");
     };
-  }, [ENDPOINT, location.search]);
+  }, [ENDPOINT, location.search,navigate]);
 
   useEffect(() => {
     socket.on("message", (message) => {
