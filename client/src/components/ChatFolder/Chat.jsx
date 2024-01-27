@@ -17,7 +17,7 @@ export default function Chat() {
   const [users, setUsers] = useState('');
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
-  const ENDPOINT = "https://reace-node-socketio-chat-app.vercel.app/";
+  const ENDPOINT = "localhost:5000/";
   const navigate = useNavigate();
 
   let location = useLocation();
