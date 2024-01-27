@@ -4,20 +4,23 @@ import http from "http";
 import router from "./router.js";
 import cors from "cors";
 import { addUser, removeUser, getUser, getUsersInRoom } from "./users.js";
-import dotenv from "dotenv"
+import dotenv from "dotenv";
 
 dotenv.config();
 
 const app = express();
+app.use(
+  cors({
+    origin:
+      "https://65b4d4e6c65a5f7b66661726--frolicking-panda-02bc3c.netlify.app/",
+    methods: ["GET", "POST"],
+  })
+);
 const server = http.createServer(app);
 const io = new socketio(server);
 const PORT = process.env.PORT || 5000;
 
 app.use("/", router);
-app.use(cors({
-  origin : "https://65b4d4e6c65a5f7b66661726--frolicking-panda-02bc3c.netlify.app/",
-  methods : ["GET", "POST"]
-}));
 
 io.on("connection", (socket) => {
   console.log("We have a new connection!!!");
