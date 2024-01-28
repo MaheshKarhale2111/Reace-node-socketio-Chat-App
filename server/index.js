@@ -2,18 +2,16 @@ import express from "express";
 import { Server as socketio } from "socket.io";
 import http from "http";
 import router from "./router.js";
-import cors from "cors";
 import { addUser, removeUser, getUser, getUsersInRoom } from "./users.js";
 import dotenv from "dotenv";
 
 dotenv.config();
 
 const app = express();
-
 const server = http.createServer(app);
 const io = new socketio(server, {
   cors: {
-    origin: "https://65b4d4e6c65a5f7b66661726--frolicking-panda-02bc3c.netlify.app",
+    origin: process.env.FRONTEND_URL ,
   },
 });
 const PORT = process.env.PORT || 5000;
@@ -25,6 +23,7 @@ io.on("connection", (socket) => {
 
   socket.on("join", ({ name, room }, callback) => {
     console.log(name, room);
+    // console.log(getUsersInRoom(room));
     const user = addUser({ id: socket.id, name, room });
     // if (error) return callback(error);
     // console.log(user);
@@ -52,6 +51,7 @@ io.on("connection", (socket) => {
         room: user.room,
         users: getUsersInRoom(user.room),
       });
+      
     }
 
     // callback();
@@ -68,19 +68,36 @@ io.on("connection", (socket) => {
 
     callback();
   });
-  socket.on("onDisconnect", () => {
-    const user = removeUser(socket.id);
-    if (user) {
-      io.to(user.room).emit("message", {
-        user: "admin",
-        text: `${user.name} has left`,
+
+  socket.on("disconnect", () => {
+    const removedUser = removeUser(socket.id);
+    // console.log(getUsersInRoom(removedUser.room));
+    console.log("On disconnect is called");
+    if (removedUser) {
+
+
+      io.to(removedUser.room).emit("roomData", {
+      room: removedUser.room,
+      users: getUsersInRoom(removedUser.room),
       });
+
+
+      io.to(removedUser.room).emit("message", {
+        user: "admin",
+        text: `${removedUser.name} has left`,
+      });
+
+      socket.disconnect();
+
+      
     }
-    console.log("User left!!!!");
-    socket.disconnect();
+    
+    // console.log("User left!!!!");
+    
   });
 });
 
 server.listen(PORT, () => {
   console.log(`Listerning on port ${PORT}`);
+  // console.log(process.env.FRONTEND_URL)
 });
