@@ -44,7 +44,7 @@ export default function Chat() {
     //   socket.disconnect();
     //   socket.emit("onDisconnect");
     // };
-  }, [ENDPOINT, location.search, navigate]);
+  }, [location.search, navigate]);
 
   useEffect(() => {
     socket.on("message", (message) => {
@@ -61,7 +61,7 @@ export default function Chat() {
   // function for sending messages
   const sendMessage = (event) => {
     event.preventDefault();
-    console.log("sendmessage is called with ", message);
+    // console.log("sendmessage is called with ", message);
     if (message) {
       socket.emit("sendMessage", message, () => setMessage(""));
       // third parameter is callback where we will clean the state

@@ -15,6 +15,7 @@ const io = new socketio(server, {
   },
 });
 const PORT = process.env.PORT || 5000;
+console.log("Fronend url is", process.env.FRONTEND_URL);
 
 app.use("/", router);
 
