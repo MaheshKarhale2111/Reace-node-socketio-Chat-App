@@ -5,7 +5,7 @@ import onlineIcon from "../icons/onlineIcon.png";
 import "./textcontainer.css";
 
 export default function TextContainer({ users }) {
-  console.log(users);
+  // console.log(users);
 
   return (
     <div className="textContainer">

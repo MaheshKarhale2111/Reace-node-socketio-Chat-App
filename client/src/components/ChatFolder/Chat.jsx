@@ -9,6 +9,10 @@ import Input from "../Input/Input";
 import Messages from "../Messages/Messages";
 import TextContainer from "../TextContainer/TextContainer";
 
+const ENDPOINT = "https://chat-app-backend-0pf2.onrender.com/";
+// const ENDPOINT = "http://localhost:5000";
+
+
 let socket;
 
 export default function Chat() {
@@ -17,8 +21,9 @@ export default function Chat() {
   const [users, setUsers] = useState('');
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
-  const ENDPOINT = "https://chat-app-backend-0pf2.onrender.com/";
+
   const navigate = useNavigate();
+  // console.log(ENDPOINT);
 
   let location = useLocation();
   useEffect(() => {
@@ -28,24 +33,27 @@ export default function Chat() {
     setRoom(room);
     socket.emit("join", { name, room },(response)=> {
       if(response === 'error') { 
+        console.log("it's a error");
         alert("username is already taken"); 
         navigate('/');
       }
     } ); // using ES6 syntax where key and object names are same
 
-    return () => {
-      socket.emit("onDisconnect");
-    };
-  }, [ENDPOINT, location.search,navigate]);
+    // return () => {
+    //   console.log("return is called in useeffect");
+    //   socket.disconnect();
+    //   socket.emit("onDisconnect");
+    // };
+  }, [ENDPOINT, location.search, navigate]);
 
   useEffect(() => {
     socket.on("message", (message) => {
-      console.log("This is message ", message);
+      // console.log("This is message ", message);
       setMessages(messages => [...messages,message] );
     });
 
     socket.on("roomData", ({ users }) => {
-      console.log(users);
+      // console.log(users);
       setUsers(users);
     });
   }, []);
